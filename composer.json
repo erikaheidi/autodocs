@@ -1,0 +1,24 @@
+{
+    "name": "erikaheidi/autodocs",
+    "description": "Reference Documentation Builder",
+    "license": "MIT",
+    "homepage": "https://github.com/erikaheidi/autodocs",
+    "keywords": ["documentation", "cli"],
+    "autoload": {
+        "psr-4": {
+            "Autodocs\\": "src/"
+        }
+    },
+    "require": {
+        "minicli/minicli": "^4.2"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.16",
+        "mockery/mockery": "^1.6"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
