@@ -1,9 +1,12 @@
 <?php
 
 use Autodocs\Page\TestPage;
+use Autodocs\Service\AutodocsService;
 
-it('returns content using data from json DataFeed', function () {
-    $page = new TestPage();
+it('returns content using data from JsonDataFeed', function () {
+    $autodocs = getAutodocs();
+
+    $page = new TestPage($autodocs);
     $page->loadData();
     $content = $page->getContent();
 

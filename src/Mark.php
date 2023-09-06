@@ -1,6 +1,6 @@
 <?php
 
-namespace Autodocs\Mark;
+namespace Autodocs;
 
 class Mark
 {

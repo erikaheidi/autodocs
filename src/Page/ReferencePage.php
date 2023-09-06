@@ -2,31 +2,13 @@
 
 namespace Autodocs\Page;
 
-use Autodocs\DataFeed;
+use Autodocs\Service\AutodocsService;
 
-abstract class ReferencePage
+abstract class ReferencePage implements ReferencePageInterface
 {
-    public array $dataFeeds = [];
-
-    public function registerDataFeed(DataFeed $dataFeed): void
+    public AutodocsService $autodocs;
+    public function __construct(AutodocsService $autodocs)
     {
-        $this->dataFeeds[] = $dataFeed;
+        $this->autodocs = $autodocs;
     }
-
-    public function getDataFeed(string $identifier): ?DataFeed
-    {
-        foreach ($this->dataFeeds as $dataFeed) {
-            if ($dataFeed->identifier === $identifier) {
-                return $dataFeed;
-            }
-        }
-    }
-
-    abstract public function loadData(): void;
-
-    abstract public function getName(): string;
-
-    abstract public function getSavePath(): string;
-
-    abstract public function getContent(): string;
 }

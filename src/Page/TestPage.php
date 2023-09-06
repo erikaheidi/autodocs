@@ -2,15 +2,13 @@
 
 namespace Autodocs\Page;
 
-use Autodocs\DataFeed;
+use Autodocs\DataFeed\JsonDataFeed;
 
 class TestPage extends ReferencePage
 {
-    public function loadData(): void
+    public function loadData(array $parameters = []): void
     {
-        $datafeed = new DataFeed('test');
-        $datafeed->loadFile(__DIR__ . '/../../tests/Resources/images-tags.json');
-        $this->registerDataFeed($datafeed);
+        //
     }
 
     public function getName(): string
@@ -21,12 +19,8 @@ class TestPage extends ReferencePage
     public function getContent(): string
     {
         $content = "";
-        $data = $this->getDataFeed('test');
-        if ($data == null) {
-            return "";
-        }
-
-        foreach ($data->json as $item) {
+        $dataFeed = $this->autodocs->getDataFeed('images-tags.json');
+        foreach ($dataFeed->json as $item) {
             $content .= "Image Name: " . $item['repo']['name'] . "\n";
         }
 

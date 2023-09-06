@@ -1,8 +1,8 @@
 <?php
 
-namespace Autodocs;
+namespace Autodocs\Storage;
 
-class Storage
+class FileStorage implements StorageInterface
 {
     public function saveFile(string $path, string $content): void
     {

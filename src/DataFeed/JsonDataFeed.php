@@ -1,21 +1,13 @@
 <?php
 
-namespace Autodocs;
+namespace Autodocs\DataFeed;
 
 use Autodocs\Exception\NotFoundException;
 
-class DataFeed
+class JsonDataFeed implements DataFeedInterface
 {
-    public string $identifier;
-
     public string $data;
-
     public array $json = [];
-
-    public function __construct(string $identifier)
-    {
-        $this->identifier = $identifier;
-    }
 
     /**
      * @throws NotFoundException
@@ -44,8 +36,8 @@ class DataFeed
         $this->data = json_encode($data);
     }
 
-    public function save(string $filePath): void
+    public function save(string $path): void
     {
-        file_put_contents($filePath, $this->data);
+        file_put_contents($path, $this->data);
     }
 }

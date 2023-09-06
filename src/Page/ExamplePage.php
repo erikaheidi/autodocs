@@ -2,18 +2,18 @@
 
 namespace Autodocs\Page;
 
-use Autodocs\DataFeed;
+use Autodocs\DataFeed\JsonDataFeed;
 
 class ExamplePage extends ReferencePage
 {
-    public function loadData(): void
+    public JsonDataFeed $dataFeed;
+    public function loadData(array $parameters = []): void
     {
-        $datafeed = new DataFeed('example');
-        $datafeed->loadFromArray([
+        $this->dataFeed = new JsonDataFeed();
+        $this->dataFeed->loadFromArray([
             'title' => 'example',
             'description' => 'description'
         ]);
-        $this->registerDataFeed($datafeed);
     }
 
     public function getName(): string
@@ -23,12 +23,7 @@ class ExamplePage extends ReferencePage
 
     public function getContent(): string
     {
-        $data = $this->getDataFeed('example');
-        if ($data == null) {
-            return "";
-        }
-
-        return $data->json['title'] . ' - ' . $data->json['description'];
+        return $this->dataFeed->json['title'] . ' - ' . $this->dataFeed->json['description'];
     }
 
     public function getSavePath(): string
