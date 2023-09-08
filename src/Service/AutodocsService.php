@@ -41,6 +41,13 @@ class AutodocsService implements ServiceInterface
             }
         }
     }
+
+    /**
+     * Registers Json data feeds from cache dir
+     * @param string $identifier
+     * @param JsonDataFeed $dataFeed
+     * @return void
+     */
     protected function registerDataFeed(string $identifier, JsonDataFeed $dataFeed): void
     {
         $this->dataFeeds[$identifier] = $dataFeed;
@@ -73,15 +80,15 @@ class AutodocsService implements ServiceInterface
     public function buildPages(string $pages="all", array $parameters = []): void
     {
         $buildPages = explode(",", $pages);
+
         /** @var ReferencePageInterface $referencePage */
         foreach ($this->referencePages as $referencePage) {
             if ($pages === "all" || in_array($referencePage->getName(), $buildPages)) {
                 $referencePage->loadData($parameters);
                 $savePath = $this->config['output'] . '/' . $referencePage->getSavePath();
-                if (!is_dir(dirname($savePath))) {
-                    mkdir(dirname($savePath), 0755, true);
+                if(!$this->storage->hasDir(dirname($savePath))) {
+                    $this->storage->createDir(dirname($savePath));
                 }
-
                 $this->storage->saveFile($savePath, $this->builder->buildPage($referencePage));
             }
         }
