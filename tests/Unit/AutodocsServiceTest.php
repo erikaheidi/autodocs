@@ -17,6 +17,8 @@ it('builds reference pages', function () {
     $autodocs = getAutodocs();
     $storage = Mockery::mock(FileStorage::class);
     $storage->shouldReceive('saveFile');
+    $storage->shouldReceive('hasDir')->andReturn(false);
+    $storage->shouldReceive('createDir');
     $autodocs->storage = $storage;
 
     $this->assertCount(2, $autodocs->referencePages);
@@ -36,6 +38,8 @@ it('builds only designated page', function () {
     $autodocs = getAutodocs();
     $storage = Mockery::mock(FileStorage::class);
     $storage->shouldReceive('saveFile')->once();
+    $storage->shouldReceive('hasDir')->andReturn(false);
+    $storage->shouldReceive('createDir');
     $autodocs->storage = $storage;
 
     $autodocs->buildPages('example');
