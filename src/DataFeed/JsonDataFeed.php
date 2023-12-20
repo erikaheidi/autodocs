@@ -2,6 +2,7 @@
 
 namespace Autodocs\DataFeed;
 
+use Autodocs\Exception\JsonException;
 use Autodocs\Exception\NotFoundException;
 
 class JsonDataFeed implements DataFeedInterface
@@ -19,9 +20,18 @@ class JsonDataFeed implements DataFeedInterface
         }
 
         $this->data = file_get_contents($file);
-        if ($this->data) {
-            $this->json = json_decode($this->data, true);
+
+        if (!$this->data) {
+            throw new JsonException("JSON file is empty.");
         }
+
+        $json = json_decode($this->data, true);
+        if (!is_array($json)) {
+            throw new JsonException("Unable to decode JSON file.");
+        }
+
+        $this->json = $json;
+
     }
 
     public function load(string $data): void

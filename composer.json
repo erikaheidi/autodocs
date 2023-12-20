@@ -10,6 +10,7 @@
         }
     },
     "require": {
+        "php": "^8.2.0",
         "minicli/minicli": "^4.2",
         "minicli/stencil": "^0.2.1"
     },

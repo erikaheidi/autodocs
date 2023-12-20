@@ -9,3 +9,17 @@ it('loads JSON file', function () {
 
     $this->assertNotEmpty($datafeed->json);
 });
+
+it('throws JSON exception with a broken JSON', function () {
+
+    $datafeed = new JsonDataFeed('test');
+    $datafeed->loadFile(__DIR__ . '/../Resources/broken-json.json');
+
+})->throws(\Autodocs\Exception\JsonException::class);
+
+it('throws JSON Exception with an empty JSON', function () {
+
+    $datafeed = new JsonDataFeed('test');
+    $datafeed->loadFile(__DIR__ . '/../Resources/empty-json.json');
+
+})->throws(\Autodocs\Exception\JsonException::class);
