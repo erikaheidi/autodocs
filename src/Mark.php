@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs;
 
 class Mark
@@ -19,11 +21,11 @@ class Mark
         $colSizes = Mark::calculateCols(array_merge($content, [$headers]));
 
         if ($headers) {
-            $table .= Mark::sprintHeaders($headers, $colSizes) . "\n";
+            $table .= Mark::sprintHeaders($headers, $colSizes)."\n";
         }
 
         foreach ($content as $row) {
-            $table .= Mark::sprintRow($row, $colSizes) . "\n";
+            $table .= Mark::sprintRow($row, $colSizes)."\n";
         }
 
         return $table;
@@ -36,13 +38,13 @@ class Mark
      */
     public static function sprintHeaders(array $headers, array $colSizes): string
     {
-        $table = self::sprintRow($headers, $colSizes) . "\n";
+        $table = self::sprintRow($headers, $colSizes)."\n";
 
         foreach ($colSizes as $col => $size) {
-            if ($col == 0) {
+            if (0 === $col) {
                 $table .= "|";
             }
-            $table .= str_pad("", $size +2, "-") . "|";
+            $table .= str_pad("", $size + 2, "-")."|";
         }
 
         return $table;
@@ -57,10 +59,10 @@ class Mark
     {
         $mdRow = "";
         foreach ($row as $col => $value) {
-            if ($col == 0) {
+            if (0 === $col) {
                 $mdRow .= "|";
             }
-            $mdRow .= " " . str_pad($value, $colSizes[$col], " ") . " |";
+            $mdRow .= " ".str_pad($value, $colSizes[$col], " ")." |";
         }
 
         return $mdRow;
@@ -82,8 +84,8 @@ class Mark
 
         foreach ($table as $row) {
             foreach ($row as $key => $value) {
-                if (!isset($colMap[$key]) || strlen($value) > $colMap[$key]) {
-                    $colMap[$key] = strlen($value);
+                if ( ! isset($colMap[$key]) || mb_strlen($value) > $colMap[$key]) {
+                    $colMap[$key] = mb_strlen($value);
                 }
             }
         }

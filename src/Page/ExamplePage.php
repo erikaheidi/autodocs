@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs\Page;
 
 use Autodocs\DataFeed\JsonDataFeed;
@@ -23,7 +25,7 @@ class ExamplePage extends ReferencePage
 
     public function getContent(): string
     {
-        return $this->dataFeed->json['title'] . ' - ' . $this->dataFeed->json['description'];
+        return $this->dataFeed->json['title'].' - '.$this->dataFeed->json['description'];
     }
 
     public function getSavePath(): string

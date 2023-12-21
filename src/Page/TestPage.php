@@ -1,14 +1,14 @@
 <?php
 
-namespace Autodocs\Page;
+declare(strict_types=1);
 
-use Autodocs\DataFeed\JsonDataFeed;
+namespace Autodocs\Page;
 
 class TestPage extends ReferencePage
 {
     public function loadData(array $parameters = []): void
     {
-        //
+
     }
 
     public function getName(): string
@@ -21,7 +21,7 @@ class TestPage extends ReferencePage
         $content = "";
         $dataFeed = $this->autodocs->getDataFeed('images-tags.json');
         foreach ($dataFeed->json as $item) {
-            $content .= "Image Name: " . $item['repo']['name'] . "\n";
+            $content .= "Image Name: ".$item['repo']['name']."\n";
         }
 
         return $content;

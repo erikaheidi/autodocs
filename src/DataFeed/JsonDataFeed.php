@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs\DataFeed;
 
 use Autodocs\Exception\JsonException;
@@ -15,18 +17,18 @@ class JsonDataFeed implements DataFeedInterface
      */
     public function loadFile(string $file): void
     {
-        if (!is_file($file)) {
-            throw new NotFoundException("Data feed file $file not found.");
+        if ( ! is_file($file)) {
+            throw new NotFoundException("Data feed file {$file} not found.");
         }
 
         $this->data = file_get_contents($file);
 
-        if (!$this->data) {
+        if ( ! $this->data) {
             throw new JsonException("JSON file is empty.");
         }
 
         $json = json_decode($this->data, true);
-        if (!is_array($json)) {
+        if ( ! is_array($json)) {
             throw new JsonException("Unable to decode JSON file.");
         }
 
