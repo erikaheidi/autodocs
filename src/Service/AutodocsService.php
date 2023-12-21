@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs\Service;
 
 use Autodocs\DataFeed\JsonDataFeed;
@@ -26,7 +28,7 @@ class AutodocsService implements ServiceInterface
         $this->storage = new FileStorage();
         $this->stencil = new Stencil($this->config['templates_dir']);
         if (isset($this->config['storage'])) {
-            $this->storage = new $this->config['storage'];
+            $this->storage = new $this->config['storage']();
         }
 
         $this->builder = new PageBuilder();
@@ -36,7 +38,7 @@ class AutodocsService implements ServiceInterface
         }
 
         if (isset($this->config['cache_dir'])) {
-            foreach (glob($this->config['cache_dir'] . '/*.json') as $jsonCache) {
+            foreach (glob($this->config['cache_dir'].'/*.json') as $jsonCache) {
                 $this->registerDataFeed(basename($jsonCache), new JsonDataFeed());
             }
         }
@@ -58,7 +60,7 @@ class AutodocsService implements ServiceInterface
         if (isset($this->dataFeeds[$identifier])) {
             /** @var JsonDataFeed $dataFeed */
             $dataFeed = $this->dataFeeds[$identifier];
-            $dataFeed->loadFile($this->config['cache_dir'] . '/' . $identifier);
+            $dataFeed->loadFile($this->config['cache_dir'].'/'.$identifier);
             return $dataFeed;
         }
         return null;
@@ -67,9 +69,7 @@ class AutodocsService implements ServiceInterface
     public function getDataFeedsList(string $filter = ""): array
     {
         $cachedFiles = array_keys($this->dataFeeds);
-        return array_filter($cachedFiles, function($var) use ($filter) {
-           return str_starts_with($var, $filter);
-        });
+        return array_filter($cachedFiles, fn ($var) => str_starts_with($var, $filter));
     }
 
     public function registerPage(ReferencePageInterface $page): void
@@ -77,16 +77,16 @@ class AutodocsService implements ServiceInterface
         $this->referencePages[] = $page;
     }
 
-    public function buildPages(string $pages="all", array $parameters = []): void
+    public function buildPages(string $pages = "all", array $parameters = []): void
     {
         $buildPages = explode(",", $pages);
 
         /** @var ReferencePageInterface $referencePage */
         foreach ($this->referencePages as $referencePage) {
-            if ($pages === "all" || in_array($referencePage->getName(), $buildPages)) {
+            if ("all" === $pages || in_array($referencePage->getName(), $buildPages)) {
                 $referencePage->loadData($parameters);
-                $savePath = $this->config['output'] . '/' . $referencePage->getSavePath();
-                if(!$this->storage->hasDir(dirname($savePath))) {
+                $savePath = $this->config['output'].'/'.$referencePage->getSavePath();
+                if( ! $this->storage->hasDir(dirname($savePath))) {
                     $this->storage->createDir(dirname($savePath));
                 }
                 $this->storage->saveFile($savePath, $this->builder->buildPage($referencePage));

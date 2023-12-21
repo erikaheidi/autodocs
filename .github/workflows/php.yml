@@ -17,12 +17,17 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Setup PHP 8.2
+      uses: shivammathur/setup-php@e6f75134d35752277f093989e72e140eaa222f35
+      with:
+        php-version: '8.2'
+
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v2
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -32,5 +37,8 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
+    - name: Check code style
+      run: composer test:lint
+
     - name: Run test suite
-      run: ./vendor/bin/pest
+      run: composer test:unit

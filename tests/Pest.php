@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -27,9 +29,7 @@
 use Autodocs\Service\AutodocsService;
 use Minicli\App;
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+expect()->extend('toBeOne', fn () => $this->toBe(1));
 
 /*
 |--------------------------------------------------------------------------
@@ -46,14 +46,14 @@ function getAutodocs()
 {
     $config = [
         'autodocs' => [
-            'images_sources' => __DIR__ . '/../workdir/sources',
+            'images_sources' => __DIR__.'/../workdir/sources',
             'pages' => [
                 \Autodocs\Page\ExamplePage::class,
                 \Autodocs\Page\TestPage::class
             ],
-            'output' => __DIR__ . '/../var/output',
-            'cache_dir' => __DIR__ . '/Resources',
-            'templates_dir' => __DIR__ . '/Resources'
+            'output' => __DIR__.'/../var/output',
+            'cache_dir' => __DIR__.'/Resources',
+            'templates_dir' => __DIR__.'/Resources'
         ]
     ];
 

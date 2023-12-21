@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs\Storage;
 
 class FileStorage implements StorageInterface
 {
     public function createDir(string $path): void
     {
-        if (!is_dir($path)) {
+        if ( ! is_dir($path)) {
             mkdir($path, 0755, true);
         }
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs\Page;
 
 use Autodocs\Service\AutodocsService;

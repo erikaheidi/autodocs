@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use Autodocs\Storage\FileStorage;
 
-it('registers reference pages and lazy-loads json cache feeds', function () {
+it('registers reference pages and lazy-loads json cache feeds', function (): void {
     $autodocs = getAutodocs();
     $this->assertCount(2, $autodocs->referencePages);
     $this->assertNotEmpty($autodocs->dataFeeds);
@@ -13,7 +15,7 @@ it('registers reference pages and lazy-loads json cache feeds', function () {
     $this->assertNotEmpty($data->json);
 });
 
-it('builds reference pages', function () {
+it('builds reference pages', function (): void {
     $autodocs = getAutodocs();
     $storage = Mockery::mock(FileStorage::class);
     $storage->shouldReceive('saveFile');
@@ -25,7 +27,7 @@ it('builds reference pages', function () {
     $autodocs->buildPages();
 });
 
-it('skips building when page is not listed', function () {
+it('skips building when page is not listed', function (): void {
     $autodocs = getAutodocs();
     $storage = Mockery::mock(FileStorage::class);
     $storage->shouldNotReceive('saveFile');
@@ -34,7 +36,7 @@ it('skips building when page is not listed', function () {
     $autodocs->buildPages('page2,page3');
 });
 
-it('builds only designated page', function () {
+it('builds only designated page', function (): void {
     $autodocs = getAutodocs();
     $storage = Mockery::mock(FileStorage::class);
     $storage->shouldReceive('saveFile')->once();

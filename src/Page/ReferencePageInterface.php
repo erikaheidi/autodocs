@@ -1,9 +1,8 @@
 <?php
 
-namespace Autodocs\Page;
+declare(strict_types=1);
 
-use Autodocs\DataFeed\JsonDataFeed;
-use Autodocs\Service\AutodocsService;
+namespace Autodocs\Page;
 
 interface ReferencePageInterface
 {

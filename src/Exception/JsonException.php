@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs\Exception;
 
-class JsonException extends \Exception
-{
+use Exception;
 
+class JsonException extends Exception
+{
 }

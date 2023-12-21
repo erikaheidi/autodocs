@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs;
 
 use Autodocs\Page\ReferencePageInterface;
-use Autodocs\Storage\FileStorage;
 
 class PageBuilder
 {

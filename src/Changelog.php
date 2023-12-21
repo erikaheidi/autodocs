@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Autodocs;
 
 class Changelog
@@ -20,19 +22,19 @@ class Changelog
 
     public function makeDiff(?string $monitoredPath = null): void
     {
-        if (!$monitoredPath) {
+        if ( ! $monitoredPath) {
             $monitoredPath = $this->monitoredPath;
         }
         $previous = $this->monitoredFiles;
         $this->registerFiles($monitoredPath);
 
         foreach ($this->monitoredFiles as $index => $file) {
-            if (!array_key_exists($index, $previous)) {
+            if ( ! array_key_exists($index, $previous)) {
                 $this->newFiles[] = $file;
                 continue;
             }
 
-            if ($previous[$index]['md5'] != $file['md5']) {
+            if ($previous[$index]['md5'] !== $file['md5']) {
                 $this->changedFiles[] = $file;
             }
         }
@@ -56,9 +58,10 @@ class Changelog
     public function getChangesSummary(): string
     {
         if ($this->hasChanges()) {
-            return sprintf("%s files added and %s files changed.",
-            count($this->newFiles),
-            count($this->changedFiles)
+            return sprintf(
+                "%s files added and %s files changed.",
+                count($this->newFiles),
+                count($this->changedFiles)
             );
         }
 
@@ -67,7 +70,7 @@ class Changelog
 
     public function registerFiles(string $monitoredPath): void
     {
-        foreach (glob($monitoredPath . '/*') as $filename) {
+        foreach (glob($monitoredPath.'/*') as $filename) {
             if (is_dir($filename)) {
                 $this->registerFiles($filename);
             }
