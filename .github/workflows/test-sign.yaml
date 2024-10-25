@@ -23,7 +23,7 @@ jobs:
         run: |
           set -x
           docker pull cgr.dev/chainguard/wolfi-base
-          docker tag wolfi:latest "${IMAGE}"
+          docker tag wolfi-base:latest "${IMAGE}"
           docker push "${IMAGE}"
       - name: Sign image with cosign
         run: |
