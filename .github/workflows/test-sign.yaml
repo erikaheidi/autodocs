@@ -1,0 +1,40 @@
+on:
+  workflow_dispatch:
+  
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+  DOCKER_CONFIG: .docker-tmp
+jobs:
+  push-and-sign:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      packages: write
+    steps:
+      - name: Log in to registry
+        run: |
+          set -x
+          mkdir -p "${DOCKER_CONFIG}"
+          echo '{}' > "${DOCKER_CONFIG}/config.json"
+          echo "${{ github.token }}" | docker login \
+            -u "${{ github.repository_owner }}" \
+            --password-stdin ghcr.io
+      - name: Push image with docker
+        run: |
+          set -x
+          docker pull cgr.dev/chainguard/wolfi-base
+          docker tag wolfi:latest "${IMAGE}"
+          docker push "${IMAGE}"
+      - name: Sign image with cosign
+        run: |
+          set -x
+          env | grep -v ^HOME= > github-actions.txt
+          docker run --rm --env-file=./github-actions.txt \
+            -v "${PWD}/${DOCKER_CONFIG}:/tmp/${DOCKER_CONFIG}" \
+            -e DOCKER_CONFIG="/tmp/${DOCKER_CONFIG}" \
+            cgr.dev/chainguard/cosign \
+            sign "${IMAGE}" \
+              --yes \
+              -a sha=${{ github.sha }} \
+              -a run_id=${{ github.run_id }} \
+              -a run_attempt=${{ github.run_attempt }}
